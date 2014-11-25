@@ -1,39 +1,50 @@
-bitaddress.org
-JavaScript Client-Side Bitcoin Wallet Generator
+Secure Paper Wallet
+JavaScript Client-Side Bitcoin Wallet Printer
 
-Now Bitcoin addresses and their corresponding private key can be conveniently 
-generated in a web browser.
+Background
+----------------
+My requirements on a paper wallet for long-term storage of bitcoins are:
 
-The bitaddress.org project provides an all-in-one HTML document with embedded
-JavaScript/Css/Images. The JavaScript is readable not minified and contains no
-XMLHttpRequest's (no AJAX). The benefit of this technique is you can load the 
-JavaScript locally and trust that the JavaScript did not change after being 
-loaded. 
+1) Possible to print on a full page (A4 or letter)
+2) Private keys on the printout should be redundant in several formats
+3) Private keys on the printout should be large enough so that any fading of ink/toner does not matter.
+4) Have direct links to several block-explorers to validate the balance
+5) Must be able to run and print from a totally non-networked computer using a modern browser
+6) Must allow me to generate a private key externally from a trusted source
 
-Here is a link to the BitcoinTalk.org forum topic discussing this project:
-https://bitcointalk.org/index.php?topic=43496.0
+There exists several nice paper-wallet generators online today, but most of them are focused
+on providing a grapically beautiful paper-wallet. In my opinion they do not prioritize long-time security as the
+sensitive information is printed too small to safeguard against fading, water-damage etc.
 
+The site www.bitaddress.org were the closest match but required generation of secure random seeds and lots of 
+navigation before getting to printing a wallet.
 
-Please send DONATIONS for this project to Bitcoin Address: 
-1NiNja1bUmhSoTXozBRBEtR8LeF9TGbZBN
+This project
+----------------
+I choose to base my work on bitaddress.org but with a few tweaks:
 
+1) Everything except the printing of a paper-wallet is removed, it cannot generate wallets.
+2) Starts immediately at the page where wallets are printed
+3) Larger sizes for important information (such as the private key QR-code and hex)
+4) Armory-style printing of hexcode with spaces to make manual re-entry easier
+5) Second page with "public" information such as the public address and links to block-explorers
+   that can be put on the outside of the envelope holding the wallet.
+6) Re-styled using bootstrap and jquery
+7) Mostly tested in Chrome (Verified working in IE11)
 
-END USER NOTES: 
- 1) To print QRCode in IE8 you must enable the "Print Background Colors and 
-    Images" checkbox on the "Page Setup" screen.
- 2) For Bulk Wallet I recommended using Google Chrome, it's the fastest.
- 3) Requires IE8+, Firefox, Chrome or sufficient JavaScript support.
- 4) Mobile Safari only works with iPhone4 or newer devices.
-    Older devices timeout while executing JavaScript.
- 5) DO NOT use Opera Mini it renders JavaScript output server side, therefore
-    they might record the private key you generated.
- 6) Art Wallet does not work properly in IE8 due to CSS limitations.
+The wallets created by this software are intended to be printed on a full-sized page (A4/Letter) and be
+put in an envelope inside a safety-deposit box or safe. No fancy folding or holographic stickers are required.
+
+Safety notes
+----------------
+1) Generate your private keys however you like, preferrably using a non-networked computer
+2) Use this on a non-networked computer, printing with a printer you trust
+3) Use high quality acid-free paper (ISO 9706/ISO 11108) and good quality toner/ink
 
 
 Notice of Copyrights and Licenses:
 ---------------------------------------
 The bitaddress.org project, software and embedded resources are copyright bitaddress.org. 
-The bitaddress.org name and logo are not part of the open source license.
 
 Portions of the all-in-one HTML document contain JavaScript codes that are the copyrights 
 of others. The individual copyrights are included throughout the document along with their 
@@ -45,13 +56,12 @@ JavaScript function		License
 Array.prototype.map		Public Domain
 window.Crypto			BSD License
 window.SecureRandom		BSD License
-window.EllipticCurve		BSD License
+window.EllipticCurve    BSD License
 window.BigInteger		BSD License
 window.QRCode			MIT License
 window.Bitcoin			MIT License
 
-The bitaddress.org software is available under The MIT License (MIT)
-Copyright (c) 2011-2013 bitaddress.org
+The bitaddress.org software that this is based on is available under The MIT License (MIT)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this 
 software and associated documentation files (the "Software"), to deal in the Software 

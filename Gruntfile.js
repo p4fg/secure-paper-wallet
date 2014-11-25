@@ -4,8 +4,8 @@ module.exports = function (grunt) {
 		pkg: grunt.file.readJSON('package.json'),
 		combine: {
 			single: {
-				input: "./src/bitaddress-ui.html",
-				output: "./bitaddress.org.html",
+				input: "./src/securepaperwallet-ui.html",
+				output: "./securepaperwallet.html",
 				tokens: [
 					{ token: "//array.map.js", file: "./src/array.map.js" },
 					{ token: "//biginteger.js", file: "./src/biginteger.js" },
@@ -28,17 +28,12 @@ module.exports = function (grunt) {
 					{ token: "//ninja.key.js", file: "./src/ninja.key.js" },
 					{ token: "//ninja.misc.js", file: "./src/ninja.misc.js" },
 					{ token: "//ninja.onload.js", file: "./src/ninja.onload.js" },
-					{ token: "//ninja.unittests.js", file: "./src/ninja.unittests.js" },
-					{ token: "//ninja.translator.js", file: "./src/ninja.translator.js" },
-					{ token: "//ninja.singlewallet.js", file: "./src/ninja.singlewallet.js" },
-					{ token: "//ninja.paperwallet.js", file: "./src/ninja.paperwallet.js" },
-					{ token: "//ninja.bulkwallet.js", file: "./src/ninja.bulkwallet.js" },
-					{ token: "//ninja.brainwallet.js", file: "./src/ninja.brainwallet.js" },
-					{ token: "//ninja.vanitywallet.js", file: "./src/ninja.vanitywallet.js" },
-					{ token: "//ninja.splitwallet.js", file: "./src/ninja.splitwallet.js" },
 					{ token: "//ninja.detailwallet.js", file: "./src/ninja.detailwallet.js" },
 					{ token: "//qrcode.js", file: "./src/qrcode.js" },
 					{ token: "//securerandom.js", file: "./src/securerandom.js" },
+					{ token: "//jquery-2.1.1.min.js", file: "./src/jquery-2.1.1.min.js" },
+					{ token: "//bootstrap.js", file: "./src/bootstrap.js" },
+					{ token: "//bootstrap.css", file: "./src/bootstrap.css" },
 					{ token: "//main.css", file: "./src/main.css" }
 				]
 			}

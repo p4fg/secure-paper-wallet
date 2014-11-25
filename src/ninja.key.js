@@ -44,18 +44,18 @@ ninja.privateKey = {
 		try {
 			hex = Bitcoin.Base58.decode(base58Encrypted);
 		} catch (e) {
-			callback(new Error(ninja.translator.get("detailalertnotvalidprivatekey")));
+			callback(new Error("Not s valid private key"));
 			return;
 		}
 
 		// 43 bytes: 2 bytes prefix, 37 bytes payload, 4 bytes checksum
 		if (hex.length != 43) {
-			callback(new Error(ninja.translator.get("detailalertnotvalidprivatekey")));
+			callback(new Error("Not s valid private key"));
 			return;
 		}
 		// first byte is always 0x01 
 		else if (hex[0] != 0x01) {
-			callback(new Error(ninja.translator.get("detailalertnotvalidprivatekey")));
+			callback(new Error("Not a valid private key"));
 			return;
 		}
 
@@ -63,7 +63,7 @@ ninja.privateKey = {
 		hex = hex.slice(0, -4);
 		var checksum = Bitcoin.Util.dsha256(hex);
 		if (checksum[0] != expChecksum[0] || checksum[1] != expChecksum[1] || checksum[2] != expChecksum[2] || checksum[3] != expChecksum[3]) {
-			callback(new Error(ninja.translator.get("detailalertnotvalidprivatekey")));
+			callback(new Error("Not s valid private key"));
 			return;
 		}
 
@@ -78,7 +78,7 @@ ninja.privateKey = {
 			}
 			// key should NOT use compression
 			else if (hex[2] != 0xc0) {
-				callback(new Error(ninja.translator.get("detailalertnotvalidprivatekey")));
+				callback(new Error("Not s valid private key"));
 				return;
 			}
 		}
@@ -88,12 +88,12 @@ ninja.privateKey = {
 			isCompPoint = (hex[2] & 0x20) != 0;
 			hasLotSeq = (hex[2] & 0x04) != 0;
 			if ((hex[2] & 0x24) != hex[2]) {
-				callback(new Error(ninja.translator.get("detailalertnotvalidprivatekey")));
+				callback(new Error("Not s valid private key"));
 				return;
 			}
 		}
 		else {
-			callback(new Error(ninja.translator.get("detailalertnotvalidprivatekey")));
+			callback(new Error("Not s valid private key"));
 			return;
 		}
 
@@ -106,7 +106,7 @@ ninja.privateKey = {
 			checksum = Bitcoin.Util.dsha256(base58AddrText); // checksum using closure
 
 			if (checksum[0] != hex[3] || checksum[1] != hex[4] || checksum[2] != hex[5] || checksum[3] != hex[6]) {
-				callback(new Error(ninja.translator.get("bip38alertincorrectpassphrase"))); // callback using closure
+				callback(new Error("Incorrect BIP38 passphrase")); // callback using closure
 				return;
 			}
 			callback(tmpkey.getBitcoinPrivateKeyByteArray()); // callback using closure

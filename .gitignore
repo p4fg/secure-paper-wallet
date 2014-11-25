@@ -1,1 +1,6 @@
+grunt
+grunt.cmd
+node.exe
+node64.exe
+npm*
 node_modules

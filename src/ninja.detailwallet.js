@@ -1,11 +1,10 @@
 ninja.wallets.detailwallet = {
 	open: function () {
-		document.getElementById("detailarea").style.display = "block";
 		document.getElementById("detailprivkey").focus();
 	},
 
 	close: function () {
-		document.getElementById("detailarea").style.display = "none";
+		
 	},
 
 	openCloseFaq: function (faqNum) {
@@ -30,6 +29,7 @@ ninja.wallets.detailwallet = {
 		if (key == "") {
 			return;
 		}
+
 		if (ninja.privateKey.isBIP38Format(key)) {
 			document.getElementById("detailbip38commands").style.display = bip38CommandDisplay;
 			if (bip38CommandDisplay != "block") {
@@ -39,80 +39,77 @@ ninja.wallets.detailwallet = {
 			}
 			var passphrase = document.getElementById("detailprivkeypassphrase").value.toString().replace(/^\s+|\s+$/g, ""); // trim white space
 			if (passphrase == "") {
-				alert(ninja.translator.get("bip38alertpassphraserequired"));
+				alert("BIP38 passphrase required");
 				return;
 			}
-			document.getElementById("busyblock").className = "busy";
 			// show Private Key BIP38 Format
+			$( ".busydecrypting" ).show();
 			document.getElementById("detailprivbip38").innerHTML = key;
-			document.getElementById("detailbip38").style.display = "block";
 			ninja.privateKey.BIP38EncryptedKeyToByteArrayAsync(key, passphrase, function (btcKeyOrError) {
-				document.getElementById("busyblock").className = "";
 				if (btcKeyOrError.message) {
 					alert(btcKeyOrError.message);
 					ninja.wallets.detailwallet.clear();
 				} else {
 					ninja.wallets.detailwallet.populateKeyDetails(new Bitcoin.ECKey(btcKeyOrError));
 				}
+				$( ".busydecrypting" ).hide();
 			});
+			
 		}
 		else {
+			var btcKey = new Bitcoin.ECKey(key);
 			if (Bitcoin.ECKey.isMiniFormat(key)) {
 				// show Private Key Mini Format
 				document.getElementById("detailprivmini").innerHTML = key;
-				document.getElementById("detailmini").style.display = "block";
+				document.getElementById("detailmini").style.display = "inline-block";
 			}
 			else if (Bitcoin.ECKey.isBase6Format(key)) {
 				// show Private Key Base6 Format
 				document.getElementById("detailprivb6").innerHTML = key;
-				document.getElementById("detailb6").style.display = "block";
-			}
-			var btcKey = new Bitcoin.ECKey(key);
-			if (btcKey.priv == null) {
-				// enforce a minimum passphrase length
-				if (key.length >= ninja.wallets.brainwallet.minPassphraseLength) {
-					// Deterministic Wallet confirm box to ask if user wants to SHA256 the input to get a private key
-					var usePassphrase = confirm(ninja.translator.get("detailconfirmsha256"));
-					if (usePassphrase) {
-						var bytes = Crypto.SHA256(key, { asBytes: true });
-						var btcKey = new Bitcoin.ECKey(bytes);
-					}
-					else {
-						ninja.wallets.detailwallet.clear();
-					}
-				}
-				else {
-					alert(ninja.translator.get("detailalertnotvalidprivatekey"));
-					ninja.wallets.detailwallet.clear();
-				}
+				document.getElementById("detailb6").style.display = "inline-block";
 			}
 			ninja.wallets.detailwallet.populateKeyDetails(btcKey);
 		}
 	},
 
+	addSpaces: function (str,n) {
+		re = new RegExp('.{1,' + n + '}', 'g');
+		return str.match(re).join(' ')
+	},
+
 	populateKeyDetails: function (btcKey) {
 		if (btcKey.priv != null) {
+			$( ".detailinfo" ).show();
 			btcKey.setCompressed(false);
-			document.getElementById("detailprivhex").innerHTML = btcKey.toString().toUpperCase();
+			document.getElementById("detailprivhex").innerHTML = ninja.wallets.detailwallet.addSpaces(btcKey.toString().toLowerCase(),8);
 			document.getElementById("detailprivb64").innerHTML = btcKey.toString("base64");
 			var bitcoinAddress = btcKey.getBitcoinAddress();
 			var wif = btcKey.getBitcoinWalletImportFormat();
-			document.getElementById("detailpubkey").innerHTML = btcKey.getPubKeyHex();
+			document.getElementById("detailpubkey").innerHTML = ninja.wallets.detailwallet.addSpaces(btcKey.getPubKeyHex().toLowerCase(),8);
 			document.getElementById("detailaddress").innerHTML = bitcoinAddress;
-			document.getElementById("detailprivwif").innerHTML = wif;
+			document.getElementById("detailprivwif").innerHTML = ninja.wallets.detailwallet.addSpaces(wif,6)
 			btcKey.setCompressed(true);
 			var bitcoinAddressComp = btcKey.getBitcoinAddress();
 			var wifComp = btcKey.getBitcoinWalletImportFormat();
-			document.getElementById("detailpubkeycomp").innerHTML = btcKey.getPubKeyHex();
+			document.getElementById("detailpubkeycomp").innerHTML = ninja.wallets.detailwallet.addSpaces(btcKey.getPubKeyHex().toLowerCase(),8);
 			document.getElementById("detailaddresscomp").innerHTML = bitcoinAddressComp;
-			document.getElementById("detailprivwifcomp").innerHTML = wifComp;
+			document.getElementById("detailprivwifcomp").innerHTML = ninja.wallets.detailwallet.addSpaces(wifComp,6);
 
 			ninja.qrCode.showQrCode({
 				"detailqrcodepublic": bitcoinAddress,
-				"detailqrcodepubliccomp": bitcoinAddressComp,
+				"detailqrcodepubliccomp": bitcoinAddressComp
+			}, 3);
+			ninja.qrCode.showQrCode({
 				"detailqrcodeprivate": wif,
 				"detailqrcodeprivatecomp": wifComp
-			}, 4);
+			}, 6);
+
+			document.getElementById("envelopedetailaddress").innerHTML = bitcoinAddress;
+			ninja.qrCode.showQrCode({
+				"envelopeblockrio": "http://btc.blockr.io/address/info/" + bitcoinAddress,
+				"envelopeblockchaininfo": "https://blockchain.info/address/" + bitcoinAddress,
+				"envelopedetailqrcodepublic": bitcoinAddress
+			}, 3,100,100);
 		}
 	},
 
@@ -132,6 +129,12 @@ ninja.wallets.detailwallet = {
 		document.getElementById("detailqrcodepubliccomp").innerHTML = "";
 		document.getElementById("detailqrcodeprivate").innerHTML = "";
 		document.getElementById("detailqrcodeprivatecomp").innerHTML = "";
+
+		document.getElementById("envelopedetailaddress").innerHTML = "";
+		document.getElementById("envelopeblockrio").innerHTML = "";
+		document.getElementById("envelopeblockchaininfo").innerHTML = "";
+		document.getElementById("envelopedetailqrcodepublic").innerHTML = "";
+
 		document.getElementById("detailb6").style.display = "none";
 		document.getElementById("detailmini").style.display = "none";
 		document.getElementById("detailbip38commands").style.display = "none";

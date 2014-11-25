@@ -1,6 +1,6 @@
 ninja.seeder = {
 	init: (function () {
-		document.getElementById("generatekeyinput").value = "";
+		
 	})(),
 
 	// number of mouse movements to wait for
@@ -110,7 +110,7 @@ ninja.qrCode = {
 		return null;
 	},
 
-	createCanvas: function (text, sizeMultiplier) {
+	createCanvas: function (text, sizeMultiplier, stylewidth, styleheight) {
 		sizeMultiplier = (sizeMultiplier == undefined) ? 2 : sizeMultiplier; // default 2
 		// create the qrcode itself
 		var typeNumber = ninja.qrCode.getTypeNumber(text);
@@ -124,8 +124,8 @@ ninja.qrCode = {
 		var scale = 10.0;
 		canvas.width = width * scale;
 		canvas.height = height * scale;
-		canvas.style.width = width + 'px';
-		canvas.style.height = height + 'px';
+		canvas.style.width = ((stylewidth == undefined) ? width : stylewidth) + 'px';
+		canvas.style.height = ((styleheight == undefined) ? height : styleheight) + 'px';
 		var ctx = canvas.getContext('2d');
 		ctx.scale(scale, scale);
 		// compute tileW/tileH based on width/height
@@ -169,13 +169,13 @@ ninja.qrCode = {
 	// example: { "id1": "string1", "id2": "string2"}
 	//		"id1" is the id of a div element where you want a QRCode inserted.
 	//		"string1" is the string you want encoded into the QRCode.
-	showQrCode: function (keyValuePair, sizeMultiplier) {
+	showQrCode: function (keyValuePair, sizeMultiplier,stylewidth,styleheight) {
 		for (var key in keyValuePair) {
 			var value = keyValuePair[key];
 			try {
 				if (document.getElementById(key)) {
 					document.getElementById(key).innerHTML = "";
-					document.getElementById(key).appendChild(ninja.qrCode.createCanvas(value, sizeMultiplier));
+					document.getElementById(key).appendChild(ninja.qrCode.createCanvas(value, sizeMultiplier,stylewidth,styleheight));
 				}
 			}
 			catch (e) {
