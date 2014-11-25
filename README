@@ -12,12 +12,10 @@ My requirements on a paper wallet for long-term storage of bitcoins are:
 5) Must be able to run and print from a totally non-networked computer using a modern browser
 6) Must allow me to generate a private key externally from a trusted source
 
-There exists several nice paper-wallet generators online today, but most of them are focused
-on providing a grapically beautiful paper-wallet. In my opinion they do not prioritize long-time security as the
-sensitive information is printed too small to safeguard against fading, water-damage etc.
+There exists several nice paper-wallet generators online today, but most of them are focused on providing a grapically beautiful paper-wallet. 
+In my opinion they do not prioritize long-time security as the sensitive information is printed too small to safeguard against fading, water-damage etc.
 
-The site www.bitaddress.org were the closest match but required generation of secure random seeds and lots of 
-navigation before getting to printing a wallet.
+The site www.bitaddress.org were the closest match but required generation of secure random seeds and lots of navigation before getting to printing a wallet.
 
 This project
 ----------------
@@ -32,8 +30,8 @@ I choose to base my work on bitaddress.org but with a few tweaks:
 6) Re-styled using bootstrap and jquery
 7) Mostly tested in Chrome (Verified working in IE11)
 
-The wallets created by this software are intended to be printed on a full-sized page (A4/Letter) and be
-put in an envelope inside a safety-deposit box or safe. No fancy folding or holographic stickers are required.
+The wallets created by this software are intended to be printed on a full-sized page (A4/Letter) and be put in an envelope inside a safety-deposit box or safe. 
+No fancy folding or holographic stickers are required.
 
 Safety notes
 ----------------
