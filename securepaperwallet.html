@@ -15073,6 +15073,7 @@ ninja.wallets.detailwallet = {
 	viewDetails: function () {
 		var bip38 = false;
 		var key = document.getElementById("detailprivkey").value.toString().replace(/^\s+|\s+$/g, ""); // trim white space
+		key = key.replace(/\s/g,"") // Trim spaces inside key
 		document.getElementById("detailprivkey").value = key;
 		var bip38CommandDisplay = document.getElementById("detailbip38commands").style.display;
 		ninja.wallets.detailwallet.clear();
